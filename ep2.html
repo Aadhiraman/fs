@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #e8e8e8;
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .chatbox {
+            width: 350px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h2 {
+            text-align: center;
+            color: blue;
+        }
+
+        #chat {
+            height: 300px;
+            overflow-y: auto;
+            background: #f2f2f2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        input {
+            width: 70%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        p {
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .user {
+            background: #cce5ff;
+            text-align: right;
+        }
+
+        .bot {
+            background: #d4edda;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="chatbox">
+
+    <h2>My Chatbot</h2>
+
+    <div id="chat">
+        <p class="bot">Bot: Hello! How can I help you?</p>
+    </div>
+
+    <input type="text" id="message"
+           placeholder="Enter your message">
+
+    <button onclick="sendMessage()">Send</button>
+
+</div>
+
+<script>
+
+function sendMessage() {
+
+    let input = document.getElementById("message");
+    let msg = input.value.toLowerCase().trim();
+
+    if (msg === "") {
+        return;
+    }
+
+    let chat = document.getElementById("chat");
+    chat.innerHTML +=
+        "<p class='user'>You: " + input.value + "</p>";
+
+    let reply = "";
+    if (msg.includes("hello") || msg.includes("hi")) {
+        reply = "Hello! Nice to meet you.";
+    }
+    else if (msg.includes("how are you")) {
+        reply = "I am fine! How are you?";
+    }
+    else if (msg.includes("your name")) {
+        reply = "I am a simple chatbot.";
+    }
+    else if (msg.includes("help")) {
+        reply = "Sure! What do you need help with?";
+    }
+    else if (msg.includes("time")) {
+        reply = "Current time is " + new Date().toLocaleTimeString();
+    }
+    else if (msg.includes("date")) {
+        reply = "Today's date is " + new Date().toLocaleDateString();
+    }
+    else if (msg.includes("thank")) {
+        reply = "You're welcome!";
+    }
+    else if (msg.includes("bye")) {
+        reply = "Goodbye! Have a nice day.";
+    }
+    else {
+        reply = "Sorry, I don't understand. Please ask something else.";
+    }
+    chat.innerHTML +=
+        "<p class='bot'>Bot: " + reply + "</p>";
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
+}
+document.getElementById("message").addEventListener("keypress",
+    function(event) {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    }
+);
+</script>
+</body>
+</html>

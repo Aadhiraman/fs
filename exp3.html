@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html ng-app="calcApp">
+<head>
+    <title>Angular Calculator</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+            background: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator {
+            width: 300px;
+            background: #222;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        h2 {
+            color: white;
+            text-align: center;
+        }
+
+        input {
+            width: 95%;
+            height: 55px;
+            font-size: 25px;
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            height: 55px;
+            font-size: 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #eee;
+        }
+
+        .operator {
+            background: orange;
+            color: white;
+        }
+
+        .clear {
+            background: red;
+            color: white;
+        }
+
+        .equal {
+            background: green;
+            color: white;
+        }
+    </style>
+</head>
+
+<body ng-controller="calcCtrl">
+
+    <div class="calculator">
+        <h2>Calculator</h2>
+        <input type="text" ng-model="display" readonly>
+
+        <div class="buttons">
+
+            <button class="clear" ng-click="clear()">C</button>
+            <button ng-click="backspace()">DEL</button>
+            <button class="operator" ng-click="press('%')">%</button>
+            <button class="operator" ng-click="press('/')">÷</button>
+
+            <button ng-click="press('7')">7</button>
+            <button ng-click="press('8')">8</button>
+            <button ng-click="press('9')">9</button>
+            <button class="operator" ng-click="press('*')">×</button>
+
+            <button ng-click="press('4')">4</button>
+            <button ng-click="press('5')">5</button>
+            <button ng-click="press('6')">6</button>
+            <button class="operator" ng-click="press('-')">−</button>
+
+            <button ng-click="press('1')">1</button>
+            <button ng-click="press('2')">2</button>
+            <button ng-click="press('3')">3</button>
+            <button class="operator" ng-click="press('+')">+</button>
+
+            <button ng-click="press('0')">0</button>
+            <button ng-click="press('.')">.</button>
+            <button class="equal" ng-click="calculate()">=</button>
+
+        </div>
+    </div>
+
+<script>
+
+var app = angular.module("calcApp", []);
+
+app.controller("calcCtrl", function($scope) {
+
+    $scope.display = "";
+
+    $scope.press = function(value) {
+        $scope.display += value;
+    };
+
+    $scope.clear = function() {
+        $scope.display = "";
+    };
+
+    $scope.backspace = function() {
+        $scope.display = $scope.display.slice(0, -1);
+    };
+
+    $scope.calculate = function() {
+        try {
+            if (!/^[0-9+\-*/%.() ]+$/.test($scope.display) ||
+                $scope.display.trim() === "") {
+                $scope.display = "Error";
+                return;
+            }
+
+            let result = Function(
+                '"use strict"; return (' + $scope.display + ')'
+            )();
+
+            $scope.display = Number.isFinite(result)
+                ? String(result)
+                : "Error";
+
+        } catch (e) {
+            $scope.display = "Error";
+        }
+    };
+
+});
+
+</script>
+
+</body>
+</html>
